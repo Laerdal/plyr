@@ -219,7 +219,8 @@ class Listeners {
 
         // Ignore focus events if a key was pressed prior
         if (event.type === 'focus' && !wasKeyDown) {
-            return;
+            // TODO - this return prevents the first focusable element getting focus styling when tabbing in from another frame
+            // return;
         }
 
         // Remove all current
