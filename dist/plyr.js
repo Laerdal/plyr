@@ -3950,10 +3950,10 @@ typeof navigator === "object" && (function (global, factory) {
         }
       }).then(function () {
         Object.assign(_this2.elements.poster.style, {
-          backgroundImage: "url('".concat(poster, "')"),
-          // Reset backgroundSize as well (since it can be set to "cover" for padded thumbnails for youtube)
+          // Reset backgroundSize (since it can be set to "cover" for padded thumbnails for youtube)
           backgroundSize: ''
         });
+        _this2.elements.poster.src = poster;
         ui.togglePoster.call(_this2, true);
         return poster;
       });
@@ -4218,9 +4218,9 @@ typeof navigator === "object" && (function (global, factory) {
 
         var wasKeyDown = event.timeStamp - this.lastKeyDown <= 20; // Ignore focus events if a key was pressed prior
 
-        if (event.type === 'focus' && !wasKeyDown) {
-          return;
-        } // Remove all current
+        if (event.type === 'focus' && !wasKeyDown) ; // TODO - this return prevents the first focusable element getting focus styling when tabbing in from another frame
+        // return;
+        // Remove all current
 
 
         removeCurrent(); // Delay the adding of classname until the focus has changed
@@ -5825,7 +5825,7 @@ typeof navigator === "object" && (function (global, factory) {
 
         wrap(this.media, this.elements.wrapper); // Faux poster container
 
-        this.elements.poster = createElement('div', {
+        this.elements.poster = createElement('img', {
           class: this.config.classNames.poster
         });
         this.elements.wrapper.appendChild(this.elements.poster);

@@ -574,7 +574,7 @@ typeof navigator === "object" && (function (global, factory) {
   });
 
   var _core = createCommonjsModule(function (module) {
-  var core = module.exports = { version: '2.6.2' };
+  var core = module.exports = { version: '2.6.3' };
   if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
   });
   var _core_1 = _core.version;
@@ -2333,9 +2333,10 @@ typeof navigator === "object" && (function (global, factory) {
   var $SPLIT = 'split';
   var LENGTH = 'length';
   var LAST_INDEX$1 = 'lastIndex';
+  var MAX_UINT32 = 0xffffffff;
 
-  // eslint-disable-next-line no-empty
-  var SUPPORTS_Y = !!(function () { try { return new RegExp('x', 'y'); } catch (e) {} })();
+  // babel-minify transpiles RegExp('x', 'y') -> /x/y and it causes SyntaxError
+  var SUPPORTS_Y = !_fails(function () { });
 
   // @@split logic
   _fixReWks('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
@@ -2360,7 +2361,7 @@ typeof navigator === "object" && (function (global, factory) {
                     (separator.unicode ? 'u' : '') +
                     (separator.sticky ? 'y' : '');
         var lastLastIndex = 0;
-        var splitLimit = limit === undefined ? 4294967295 : limit >>> 0;
+        var splitLimit = limit === undefined ? MAX_UINT32 : limit >>> 0;
         // Make `global` and avoid `lastIndex` issues by working with a copy
         var separatorCopy = new RegExp(separator.source, flags + 'g');
         var match, lastIndex, lastLength;
@@ -2414,14 +2415,14 @@ typeof navigator === "object" && (function (global, factory) {
 
         var unicodeMatching = rx.unicode;
         var flags = (rx.ignoreCase ? 'i' : '') +
-                      (rx.multiline ? 'm' : '') +
-                      (rx.unicode ? 'u' : '') +
-                      (SUPPORTS_Y ? 'y' : 'g');
+                    (rx.multiline ? 'm' : '') +
+                    (rx.unicode ? 'u' : '') +
+                    (SUPPORTS_Y ? 'y' : 'g');
 
         // ^(? + rx + ) is needed, in combination with some S slicing, to
         // simulate the 'y' flag.
         var splitter = new C(SUPPORTS_Y ? rx : '^(?:' + rx.source + ')', flags);
-        var lim = limit === undefined ? 0xffffffff : limit >>> 0;
+        var lim = limit === undefined ? MAX_UINT32 : limit >>> 0;
         if (lim === 0) return [];
         if (S.length === 0) return _regexpExecAbstract(splitter, S) === null ? [S] : [];
         var p = 0;
@@ -7015,10 +7016,10 @@ typeof navigator === "object" && (function (global, factory) {
         }
       }).then(function () {
         Object.assign(_this2.elements.poster.style, {
-          backgroundImage: "url('".concat(poster, "')"),
-          // Reset backgroundSize as well (since it can be set to "cover" for padded thumbnails for youtube)
+          // Reset backgroundSize (since it can be set to "cover" for padded thumbnails for youtube)
           backgroundSize: ''
         });
+        _this2.elements.poster.src = poster;
         ui.togglePoster.call(_this2, true);
         return poster;
       });
@@ -7283,9 +7284,9 @@ typeof navigator === "object" && (function (global, factory) {
 
         var wasKeyDown = event.timeStamp - this.lastKeyDown <= 20; // Ignore focus events if a key was pressed prior
 
-        if (event.type === 'focus' && !wasKeyDown) {
-          return;
-        } // Remove all current
+        if (event.type === 'focus' && !wasKeyDown) ; // TODO - this return prevents the first focusable element getting focus styling when tabbing in from another frame
+        // return;
+        // Remove all current
 
 
         removeCurrent(); // Delay the adding of classname until the focus has changed
@@ -8931,7 +8932,7 @@ typeof navigator === "object" && (function (global, factory) {
 
         wrap(this.media, this.elements.wrapper); // Faux poster container
 
-        this.elements.poster = createElement('div', {
+        this.elements.poster = createElement('img', {
           class: this.config.classNames.poster
         });
         this.elements.wrapper.appendChild(this.elements.poster);
