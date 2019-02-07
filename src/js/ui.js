@@ -194,10 +194,10 @@ const ui = {
                 })
                 .then(() => {
                     Object.assign(this.elements.poster.style, {
-                        backgroundImage: `url('${poster}')`,
-                        // Reset backgroundSize as well (since it can be set to "cover" for padded thumbnails for youtube)
+                        // Reset backgroundSize (since it can be set to "cover" for padded thumbnails for youtube)
                         backgroundSize: '',
                     });
+                    this.elements.poster.src = poster;
                     ui.togglePoster.call(this, true);
                     return poster;
                 })
