@@ -67,14 +67,16 @@
 
 // Video controls
 .plyr--video .plyr__controls {
-    background: linear-gradient(rgba($plyr-video-controls-bg, 0), rgba($plyr-video-controls-bg, 0.7));
+    // background: linear-gradient(rgba($plyr-video-controls-bg, 0), rgba($plyr-video-controls-bg, 0.7));
+    background: #fff;
     border-bottom-left-radius: inherit;
     border-bottom-right-radius: inherit;
     bottom: 0;
     color: $plyr-video-control-color;
     left: 0;
+    order: 1;
     padding: ($plyr-control-spacing * 2) ($plyr-control-spacing / 2) ($plyr-control-spacing / 2);
-    position: absolute;
+    position: relative;
     right: 0;
     transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
     z-index: 3;

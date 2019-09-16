@@ -245,7 +245,7 @@ const controls = {
                 attributes.class += ` ${this.config.classNames.control}--overlaid`;
                 type = 'play';
                 props.label = 'play';
-                props.icon = 'play';
+                props.icon = 'play-large';
                 break;
 
             default:
