@@ -109,13 +109,13 @@ const descriptions = {
       const trackEvents = this.config.descriptions.update ? 'addtrack removetrack' : 'removetrack';
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
-
+    let defaultVoice;
     if(browser.isSafari){
-      var defaultVoice = 'Alex';
+      defaultVoice = 'Alex';
       } else if(browser.isFirefox) {
-      var defaultVoice = 'Microsoft David Desktop - English (United States)';
+       defaultVoice = 'Microsoft David Desktop - English (United States)';
       } else {
-        var defaultVoice = 'Google US English';
+         defaultVoice = 'Google US English';
       }
 
     // Setup speaker
