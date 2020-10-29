@@ -110,9 +110,17 @@ const descriptions = {
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
 
+    if(browser.isSafari){
+      var defaultVoice = 'Alex';
+      } else if(browser.isFirefox) {
+      var defaultVoice = 'Microsoft David Desktop - English (United States)';
+      } else {
+        var defaultVoice = 'Google US English';
+      }
+
     // Setup speaker
     this.speaker = tts.createSpeaker({
-      voice: 'Microsoft David Desktop - English (United States)',
+      voice: defaultVoice,
       //voice: 'Google US English', //TODO: configure
       lang: 'en-US', //TODO: configure
       volume: 1,
