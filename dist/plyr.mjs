@@ -930,7 +930,10 @@ var browser = {
   isEdge: window.navigator.userAgent.includes('Edge'),
   isWebkit: 'WebkitAppearance' in document.documentElement.style && !/Edge/.test(navigator.userAgent),
   isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
-  isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform)
+  isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
+  isFirefox: window.navigator.userAgent.includes('Firefox'),
+  isChrome: window.navigator.userAgent.includes('Chrome') && navigator.vendor == 'Google Inc.',
+  isSafari: window.navigator.userAgent.includes('Safari') && navigator.vendor == 'Apple Computer, Inc.'
 };
 
 function cloneDeep(object) {
@@ -1771,11 +1774,21 @@ var descriptions = {
     if (this.isHTML5 && !browser.isIE) {
       var trackEvents = this.config.descriptions.update ? 'addtrack removetrack' : 'removetrack';
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
+    }
+
+    var defaultVoice;
+
+    if (browser.isSafari) {
+      defaultVoice = 'Alex';
+    } else if (browser.isFirefox) {
+      defaultVoice = 'Microsoft David Desktop - English (United States)';
+    } else {
+      defaultVoice = 'Google US English';
     } // Setup speaker
 
 
     this.speaker = basicTts.createSpeaker({
-      voice: 'Microsoft David Desktop - English (United States)',
+      voice: defaultVoice,
       //voice: 'Google US English', //TODO: configure
       lang: 'en-US',
       //TODO: configure
