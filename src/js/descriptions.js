@@ -109,10 +109,18 @@ const descriptions = {
       const trackEvents = this.config.descriptions.update ? 'addtrack removetrack' : 'removetrack';
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
+    let defaultVoice;
+    if(browser.isSafari){
+      defaultVoice = 'Alex';
+      } else if(browser.isFirefox) {
+       defaultVoice = 'Microsoft David Desktop - English (United States)';
+      } else {
+         defaultVoice = 'Google US English';
+      }
 
     // Setup speaker
     this.speaker = tts.createSpeaker({
-      voice: 'Microsoft David Desktop - English (United States)',
+      voice: defaultVoice,
       //voice: 'Google US English', //TODO: configure
       lang: 'en-US', //TODO: configure
       volume: 1,
