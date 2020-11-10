@@ -112,10 +112,12 @@ const descriptions = {
     let defaultVoice;
     if(browser.isSafari){
       defaultVoice = 'Alex';
-      } else if(browser.isFirefox) {
-       defaultVoice = 'Microsoft David Desktop - English (United States)';
-      } else {
-         defaultVoice = 'Google US English';
+      }
+     // } else if(browser.isFirefox) {
+      // defaultVoice = 'Microsoft David Desktop - English (United States)';
+     // }   
+      else {
+         defaultVoice = 'Microsoft David Desktop - English (United States)';
       }
 
     // Setup speaker
