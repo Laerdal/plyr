@@ -112,10 +112,7 @@ const descriptions = {
     let defaultVoice;
     if(browser.isSafari){
       defaultVoice = 'Alex';
-      }
-     // } else if(browser.isFirefox) {
-      // defaultVoice = 'Microsoft David Desktop - English (United States)';
-     // }   
+      } 
       else {
          defaultVoice = 'Microsoft David Desktop - English (United States)';
       }
