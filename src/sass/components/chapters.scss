@@ -1,0 +1,111 @@
+// --------------------------------------------------------------
+// chapters
+// --------------------------------------------------------------
+
+.plyr__chapters {
+  animation: plyr-fade-in 0.3s ease;
+  bottom: -30px;
+  display: none;
+  font-size: $plyr-font-size-chapters-small;
+  left: 0;
+  text-align: center;
+  transition: transform 0.4s ease-in-out;
+  width: 100%;
+
+  span:empty {
+    display: none;
+  }
+
+  @media (min-width: $plyr-bp-sm) {
+    font-size: $plyr-font-size-chapters-base;
+    padding: calc(#{$plyr-control-spacing} * 2);
+  }
+
+  @media (min-width: $plyr-bp-md) {
+    font-size: $plyr-font-size-chapters-medium;
+  }
+}
+
+[data-debug='true'].plyr--chapters-active .plyr__chapters {
+  display: block;
+}
+
+.plyr__chapter {
+  background: $plyr-chapters-background;
+  border-radius: 2px;
+  box-decoration-break: clone;
+  color: $plyr-chapters-text-color;
+  line-height: 185%;
+  padding: 0.2em 0.5em;
+  white-space: pre-wrap;
+
+  // Firefox adds a <div> when using getCueAsHTML()
+  div {
+    display: inline;
+  }
+}
+.chapter_container{
+
+  position: absolute;
+  bottom: 67px;
+  width: 483px;
+  display: flex;
+  place-content: flex-start;
+  z-index: 33;
+  left: 50px;
+}
+ 
+
+
+.container_bookmarks { 
+  width: auto;
+  background: #163746;
+  color: #fff;
+  font-size: 14px;
+  padding: 2px 8px 0 8px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 2px;
+    // display: inline-block;
+    // margin: 0;
+    // cursor: pointer;
+    // position: relative;
+    // padding: 2px 5px;
+    // border-radius: 2px;
+    // box-sizing: border-box;
+
+}
+.container_bookmarks:before {
+  content: '';
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #173746;
+  position: absolute;
+  top: 24px;
+  text-align: center;
+  display: inline-block;
+  left: 37%;
+  }
+
+  .container_bookmarks:after {
+    content: '';
+    background: #B3B3B3;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+    border-radius: 18px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+  }
+  .container_bookmarks:hover:after {
+    content: '';
+    background: #163746;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 18px;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+  }
