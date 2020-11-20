@@ -110,7 +110,7 @@ const descriptions = {
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
     let defaultVoice;
-    if (browser.isSafari || browser.isSafarichrome) {
+    if (browser.isSafari) {
       defaultVoice = 'Alex';
       } 
       else {

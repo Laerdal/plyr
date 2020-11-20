@@ -11,8 +11,8 @@ const browser = {
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
   isFirefox: window.navigator.userAgent.includes('Firefox'),
   isChrome: window.navigator.userAgent.includes('Chrome') && navigator.vendor == 'Google Inc.' && (navigator.appVersion.indexOf("Win") != -1),
-  isSafari: window.navigator.userAgent.includes('Safari') && navigator.vendor == 'Apple Computer, Inc.' && (navigator.appVersion.indexOf("Mac") != -1),
-  isSafarichrome: window.navigator.userAgent.includes('Safari') && navigator.vendor == 'Google Inc.' && (navigator.appVersion.indexOf("Mac") != -1)
+  isSafari: window.navigator.userAgent.includes('Safari') && (navigator.appVersion.indexOf("Mac") != -1)
+
 };
 
 export default browser;
