@@ -84,7 +84,6 @@ const chapters = {
       ({ active } = this.config.chapters);
     }
 
-
     const elements = this.media.querySelectorAll('track');
 
     Array.from(elements).forEach(track => {
@@ -182,57 +181,94 @@ const chapters = {
         duration = 0;
       }
       const bar_width= getElement.call(this, this.config.selectors.progress).offsetWidth;
-      //const bar_width =   [0].offsetWidth;
-      const chaptercontainer= createElement("div");
-      chaptercontainer.setAttribute('class', 'chapter_container');
-      var startleft;
+      this.elements.container.style.minWidth='80%';
+      this.elements.container.style.maxWidth='80%';
+      this.elements.container.style.float ='left';
+      const chapterContainer= createElement("div");
+      chapterContainer.setAttribute('class', 'chapter_container');
+      const chapterCaption = createElement("div");
+      chapterCaption.setAttribute('class','chapterCaption');
+      chapterCaption.setAttribute('tabindex', '0');
+      chapterCaption.setAttribute('role', 'menu');
+      const chapterList= createElement("ol");
+      chapterList.setAttribute('id', 'chapters');
+      chapterList.setAttribute('class', 'chapters');
+      var chapnum=1;
+      Array.from(this.media.textTracks).forEach(track => {
+        if(track.kind === "chapters"){
      for (var i = 0; i < cahpCues.length; i++) {
-      const chapteritem = createElement('span');
+      // var bar_width = document.getElementsByClassName('.plyr__progress').offsetWidth;
+      const chapterItem = createElement('span');
+      const captionItem = createElement('li');
       const start = parseFloat(cahpCues[i].start);
       const end = parseFloat(cahpCues[i].end);
       const perc = bar_width / duration;
-       chapteritem.id = "segment" + i;
-       chapteritem.className = "container_bookmarks";
-       chapteritem.setAttribute('data-chapter', i);
-       chapteritem.setAttribute('tabindex', '0');
-       chapteritem.setAttribute('role', 'button');
-       if (i == 0) {
-        start = parseFloat(cahpCues[i].start)
-        start = Math.round((start * perc));
-        startleft =start;
-        
-      } 
-      else {
-        start = parseFloat(cahpCues[i].start) - parseFloat(cahpCues[i-1].start);
-        start = Math.round((start * perc)-0.5);
-        startleft = start;
-      }
-       chapteritem.style.left = start + 'px';
-       const cuecontent = cahpCues[i].content;
-       chapteritem.innerText =cuecontent;
-       chapteritem.onclick = function () {
-         seekChapter(this.getAttribute('data-chapter'),bar_width);
+      chapterItem.className = "containerBookmarks";
+      captionItem.id = "segment" + start;
+      captionItem.className = "captionBookmarks";
+      captionItem.setAttribute('data-chapter', i);
+      captionItem.setAttribute('tabindex', '0');
+      captionItem.setAttribute('role', 'button');
+
+       const value = getPercentagevalue(start, duration);
+       chapterItem.style.left = "".concat(value / 100 * 100, "%");
+       const cueContent = cahpCues[i].content.replace('&nbsp;',' ');
+       chapterItem.innerText =chapnum + '.';
+       captionItem.innerText =chapnum + '. ' + cueContent;
+
+       captionItem.onclick = function () {
+         seekChapter(this.getAttribute('data-chapter'));
 
        }
-       chaptercontainer.appendChild(chapteritem);
-   
+       chapterContainer.appendChild(chapterItem);
+       chapterList.appendChild(captionItem);
+       chapterCaption.appendChild(chapterList);
+       chapnum++;
      }
-     insertAfter(chaptercontainer, this.elements.progress);
-    // insertAfter(chaptercontainer, this.elements.wrapper);
+
+
+        track.addEventListener('cuechange', function () {
+     if (track.activeCues.length>0 ) {
+
+          var currentLocation = "segment" + this.activeCues[0].startTime;
+          var chapter = document.getElementById(currentLocation);
+
+          if (chapter) {
+            var locations = [].slice.call(document.querySelectorAll("#chapters li"));
+
+            for (var i = 0; i < locations.length; ++i) {
+              locations[i].classList.remove("current");
+            }
+
+            chapter.classList.add("current"); 
+          }
+         }
+        });
+      }
+    });
+
+ 
+     insertAfter(chapterContainer, this.elements.progress);
+    // insertAfter(chapterCaption, this.elements.chapters);
+    insertAfter(chapterCaption, this.elements.container);
    }
 
+  function getPercentagevalue(current, max) {
+    if (current === 0 || max === 0 || Number.isNaN(current) || Number.isNaN(max)) {
+      return 0;
+    }
 
+    return (current / max * 100).toFixed(2);
+  } 
 
-
-    function seekChapter(chapter,bar_width) {
+    function seekChapter(chapter) {
       if (chapter) {
         player.currentTime = parseFloat(cahpCues[chapter].start);
-        player.elements.progress.getElementsByClassName('plyr__tooltip')[0].style.left = parseFloat(cahpCues[chapter].start) + '%';
-  
+      
       }		
     }
-   
   },
+  
 
 };
 

@@ -118,6 +118,14 @@ const defaults = {
     update: false,
   },
 
+  chapters: {
+    active: false,
+    language: 'auto',
+    // Listen to new tracks added after Plyr is initialized.
+    // This is needed for streaming captions, but may result in unselectable options
+    update: false,
+  },
+
   // Fullscreen settings
   fullscreen: {
     enabled: true, // Allow fullscreen?
@@ -184,6 +192,7 @@ const defaults = {
     frameTitle: 'Player for {title}',
     captions: 'Captions',
     descriptions: 'Descriptions',
+    chapters: 'Chapters',
     settings: 'Settings',
     pip: 'PIP',
     menuBack: 'Go back to previous menu',
@@ -320,6 +329,7 @@ const defaults = {
       mute: '[data-plyr="mute"]',
       captions: '[data-plyr="captions"]',
       descriptions: '[data-plyr="descriptions"]',
+      chapters: '[data-plyr="chapters"]',
       download: '[data-plyr="download"]',
       fullscreen: '[data-plyr="fullscreen"]',
       pip: '[data-plyr="pip"]',
@@ -347,6 +357,8 @@ const defaults = {
     caption: '.plyr__caption',
     descriptions: '.plyr__descriptions',
     description: '.plyr__description',
+    chapters: '.plyr__chapters',
+    chapter: '.plyr__chapter',
   },
 
   // Class hooks added to the player in different states
