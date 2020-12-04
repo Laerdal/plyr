@@ -89,7 +89,8 @@ const chapters = {
     Array.from(elements).forEach(track => {
       const src = track.getAttribute('src');
       let index = src.indexOf('-en_chapter.vtt');
-      if ((index !== -1) || (track.kind='chapters')) {
+      if ((index !== -1) || (track.kind=='chapters')) {
+        cahpCues =[];
       const url = parseUrl(src);
      xhr = new XMLHttpRequest();
      if (xhr != null) {
@@ -251,6 +252,7 @@ const chapters = {
      insertAfter(chapterContainer, this.elements.progress);
     // insertAfter(chapterCaption, this.elements.chapters);
     insertAfter(chapterCaption, this.elements.container);
+    
    }
 
   function getPercentagevalue(current, max) {
