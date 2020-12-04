@@ -89,7 +89,7 @@ const chapters = {
     Array.from(elements).forEach(track => {
       const src = track.getAttribute('src');
       let index = src.indexOf('-en_chapter.vtt');
-      if(index !== -1) { 
+      if ((index !== -1) || (track.kind='chapters')) {
       const url = parseUrl(src);
      xhr = new XMLHttpRequest();
      if (xhr != null) {
