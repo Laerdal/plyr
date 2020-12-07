@@ -110,10 +110,13 @@ const descriptions = {
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
     let defaultVoice;
-    if(browser.isSafari){
+    if (browser.isSafari) {
       defaultVoice = 'Alex';
       } 
-      else {
+      else if (browser.isEdge) {
+        defaultVoice = 'Microsoft David - English (United States)';
+      }
+      else { 
          defaultVoice = 'Microsoft David Desktop - English (United States)';
       }
 
