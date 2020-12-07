@@ -1795,7 +1795,9 @@ const controls = {
         .filter(Boolean)
         .forEach(button => {
           if (is.array(button) || is.nodeList(button)) {
-            Array.from(button).filter(Boolean).forEach(addProperty);
+            Array.from(button)
+              .filter(Boolean)
+              .forEach(addProperty);
           } else {
             addProperty(button);
           }

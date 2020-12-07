@@ -112,13 +112,11 @@ const descriptions = {
     let defaultVoice;
     if (browser.isSafari) {
       defaultVoice = 'Alex';
-      } 
-      else if (browser.isEdge) {
-        defaultVoice = 'Microsoft David - English (United States)';
-      }
-      else { 
-         defaultVoice = 'Microsoft David Desktop - English (United States)';
-      }
+    } else if (browser.isEdge) {
+      defaultVoice = 'Microsoft David - English (United States)';
+    } else {
+      defaultVoice = 'Microsoft David Desktop - English (United States)';
+    }
 
     // Setup speaker
     this.speaker = tts.createSpeaker({
