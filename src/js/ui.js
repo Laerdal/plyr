@@ -69,10 +69,10 @@ const ui = {
       descriptions.setup.call(this);
     }
 
-            // Setup chapters for HTML5
-            if (this.isHTML5 && !browser.isIE) {
-              chapters.setup.call(this);
-            }
+    // Setup chapters for HTML5
+    if (this.isHTML5 && !browser.isIE) {
+      chapters.setup.call(this);
+    }
     // Reset volume
     this.volume = null;
 

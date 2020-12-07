@@ -10,9 +10,11 @@ const browser = {
   isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
   isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
   isFirefox: window.navigator.userAgent.includes('Firefox'),
-  isChrome: window.navigator.userAgent.includes('Chrome') && navigator.vendor == 'Google Inc.' && (navigator.appVersion.indexOf("Win") != -1),
-  isSafari: window.navigator.userAgent.includes('Safari') && (navigator.appVersion.indexOf("Mac") != -1)
-
+  isChrome:
+    window.navigator.userAgent.includes('Chrome') &&
+    navigator.vendor == 'Google Inc.' &&
+    navigator.appVersion.indexOf('Win') != -1,
+  isSafari: window.navigator.userAgent.includes('Safari') && navigator.appVersion.indexOf('Mac') != -1,
 };
 
 export default browser;

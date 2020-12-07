@@ -44,63 +44,58 @@
     display: inline;
   }
 }
-.chapter_container{
-
+.chapter_container {
   position: relative;
   bottom: auto;
- // width: 483px;
+  // width: 483px;
   display: flex;
   place-content: flex-start;
   z-index: 33;
- // left: 50px;
- width: 95%;
+  // left: 50px;
+  width: 95%;
 }
 .chapters {
   float: left;
   min-width: 20%;
   max-width: 20%;
 }
- 
-.containerBookmarks { 
-  width: auto;
-    font-size: 14px;
-    padding: 2px 8px 0 8px;
-    position: absolute;
-    border-radius: 2px;
 
+.containerBookmarks {
+  width: auto;
+  font-size: 14px;
+  padding: 2px 8px 0 8px;
+  position: absolute;
+  border-radius: 2px;
 }
 
 .captionBookmarks {
   font-family: Lato;
-font-style: normal;
-font-weight: normal;
-font-size: 16px;
-line-height: 120%;
-color: #666666;
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-padding: 0px;
-background: #FAFAFA;
-margin: 0;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 120%;
+  color: #666666;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  background: #fafafa;
+  margin: 0;
 }
 
-
 ol#chapters li:hover {
-  background: #F1FBFE;
+  background: #f1fbfe;
   cursor: pointer;
   color: #215369;
-
-  
 }
 
 li.captionBookmarks:focus {
-  border-left: 7px solid #2E7FA1;
-  color:#333333;
+  border-left: 7px solid #2e7fa1;
+  color: #333333;
   padding-left: 1rem;
 }
 li.captionBookmarks:active {
-  background: #D4E9F2;
+  background: #d4e9f2;
   color: #163746;
 }
 
@@ -123,17 +118,15 @@ li.captionBookmarks:active {
   display: inline-block;
   left: 38%;
   top: -2px;
-  }
-
-  .captionBookmarks.current { 
-    border-left: 7px solid #2E7FA1;
-    padding-left: 1rem;
-    background: #F1FBFE;
-    color: #215369;
-  }
- 
-  .captionBookmarks.current:hover {
-    border-left: 8px solid #215369;
 }
 
- 
+.captionBookmarks.current {
+  border-left: 7px solid #2e7fa1;
+  padding-left: 1rem;
+  background: #f1fbfe;
+  color: #215369;
+}
+
+.captionBookmarks.current:hover {
+  border-left: 8px solid #215369;
+}
