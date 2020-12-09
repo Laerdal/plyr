@@ -7232,13 +7232,13 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	  isIE:
 	  /* @cc_on!@ */
 	   !!document.documentMode,
-	  isEdge: window.navigator.userAgent.includes('Edge'),
+	  isEdge: window.navigator.userAgent.includes('Edge') || window.navigator.userAgent.includes('Edg'),
 	  isWebkit: 'WebkitAppearance' in document.documentElement.style && !/Edge/.test(navigator.userAgent),
 	  isIPhone: /(iPhone|iPod)/gi.test(navigator.platform),
 	  isIos: /(iPad|iPhone|iPod)/gi.test(navigator.platform),
 	  isFirefox: window.navigator.userAgent.includes('Firefox'),
-	  isChrome: window.navigator.userAgent.includes('Chrome') && navigator.vendor == 'Google Inc.',
-	  isSafari: window.navigator.userAgent.includes('Safari') && navigator.vendor == 'Apple Computer, Inc.'
+	  isChrome: window.navigator.userAgent.includes('Chrome') && navigator.vendor == 'Google Inc.' && navigator.appVersion.indexOf('Win') != -1,
+	  isSafari: window.navigator.userAgent.includes('Safari') && navigator.appVersion.indexOf('Mac') != -1
 	};
 
 	// `Array.prototype.{ reduce, reduceRight }` methods implementation
@@ -8132,10 +8132,10 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 
 	    if (browser.isSafari) {
 	      defaultVoice = 'Alex';
-	    } else if (browser.isFirefox) {
-	      defaultVoice = 'Microsoft David Desktop - English (United States)';
+	    } else if (browser.isEdge) {
+	      defaultVoice = 'Microsoft David - English (United States)';
 	    } else {
-	      defaultVoice = 'Google US English';
+	      defaultVoice = 'Microsoft David Desktop - English (United States)';
 	    } // Setup speaker
 
 
@@ -9713,19 +9713,19 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	        if (!is.element(this.elements.settings.panels.loop)) {
 	            return;
 	        }
-	          const options = ['start', 'end', 'all', 'reset'];
+	         const options = ['start', 'end', 'all', 'reset'];
 	        const list = this.elements.settings.panels.loop.querySelector('[role="menu"]');
-	          // Show the pane and tab
+	         // Show the pane and tab
 	        toggleHidden(this.elements.settings.buttons.loop, false);
 	        toggleHidden(this.elements.settings.panels.loop, false);
-	          // Toggle the pane and tab
+	         // Toggle the pane and tab
 	        const toggle = !is.empty(this.loop.options);
 	        controls.toggleMenuButton.call(this, 'loop', toggle);
-	          // Empty the menu
+	         // Empty the menu
 	        emptyElement(list);
-	          options.forEach(option => {
+	         options.forEach(option => {
 	            const item = createElement('li');
-	              const button = createElement(
+	             const button = createElement(
 	                'button',
 	                extend(getAttributesFromSelector(this.config.selectors.buttons.loop), {
 	                    type: 'button',
@@ -9734,11 +9734,11 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	                }),
 	                i18n.get(option, this.config)
 	            );
-	              if (['start', 'end'].includes(option)) {
+	             if (['start', 'end'].includes(option)) {
 	                const badge = controls.createBadge.call(this, '00:00');
 	                button.appendChild(badge);
 	            }
-	              item.appendChild(button);
+	             item.appendChild(button);
 	            list.appendChild(item);
 	        });
 	    }, */
@@ -10159,7 +10159,7 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	      } // Toggle descriptions button
 
 
-	      if (control === 'descriptions' && !browser.isIE) {
+	      if (control === 'descriptions' && !browser.isIE && _this11.isVideo) {
 	        container.appendChild(createButton.call(_this11, 'descriptions', defaultAttributes));
 	      } // Settings button / menu
 
@@ -16474,7 +16474,7 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	      this.media.loop = toggle; // Set default to be a true toggle
 
 	      /* const type = ['start', 'end', 'all', 'none', 'toggle'].includes(input) ? input : 'toggle';
-	            switch (type) {
+	           switch (type) {
 	              case 'start':
 	                  if (this.config.loop.end && this.config.loop.end <= this.currentTime) {
 	                      this.config.loop.end = null;
@@ -16482,20 +16482,20 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	                  this.config.loop.start = this.currentTime;
 	                  // this.config.loop.indicator.start = this.elements.display.played.value;
 	                  break;
-	                case 'end':
+	               case 'end':
 	                  if (this.config.loop.start >= this.currentTime) {
 	                      return this;
 	                  }
 	                  this.config.loop.end = this.currentTime;
 	                  // this.config.loop.indicator.end = this.elements.display.played.value;
 	                  break;
-	                case 'all':
+	               case 'all':
 	                  this.config.loop.start = 0;
 	                  this.config.loop.end = this.duration - 2;
 	                  this.config.loop.indicator.start = 0;
 	                  this.config.loop.indicator.end = 100;
 	                  break;
-	                case 'toggle':
+	               case 'toggle':
 	                  if (this.config.loop.active) {
 	                      this.config.loop.start = 0;
 	                      this.config.loop.end = null;
@@ -16504,7 +16504,7 @@ typeof navigator === "object" && (function (Sentry, Shr) {
 	                      this.config.loop.end = this.duration - 2;
 	                  }
 	                  break;
-	                default:
+	               default:
 	                  this.config.loop.start = 0;
 	                  this.config.loop.end = null;
 	                  break;
