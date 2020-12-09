@@ -6307,10 +6307,10 @@ var Listeners = /*#__PURE__*/function () {
       on.call(player, player.media, 'volumechange', function (event) {
         updateLabel(elements.buttons.mute, player.muted ? 'unmute' : 'mute');
       });
-      on.call(player, player.media, 'enterfullscreen', function (event) {
+      on.call(player, player.elements.container, 'enterfullscreen', function (event) {
         updateLabel(elements.buttons.fullscreen, 'exitFullscreen');
       });
-      on.call(player, player.media, 'exitfullscreen', function (event) {
+      on.call(player, player.elements.container, 'exitfullscreen', function (event) {
         updateLabel(elements.buttons.fullscreen, 'enterFullscreen');
       });
       on.call(player, player.media, 'playing play pause ended emptied timeupdate', function (event) {
