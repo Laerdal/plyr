@@ -1468,7 +1468,7 @@ const controls = {
         container.appendChild(createButton.call(this, 'captions', defaultAttributes));
       }
       // Toggle descriptions button
-      if (control === 'descriptions' && !browser.isIE) {
+      if (control === 'descriptions' && !browser.isIE && this.isVideo) {
         container.appendChild(createButton.call(this, 'descriptions', defaultAttributes));
       }
 
