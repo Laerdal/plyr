@@ -937,10 +937,10 @@ class Listeners {
     on.call(player, player.media, 'volumechange', event => {
       updateLabel(elements.buttons.mute, player.muted ? 'unmute' : 'mute');
     });
-    on.call(player, player.media, 'enterfullscreen', event => {
+    on.call(player, player.elements.container, 'enterfullscreen', event => {
       updateLabel(elements.buttons.fullscreen, 'exitFullscreen');
     });
-    on.call(player, player.media, 'exitfullscreen', event => {
+    on.call(player, player.elements.container, 'exitfullscreen', event => {
       updateLabel(elements.buttons.fullscreen, 'enterFullscreen');
     });
     on.call(player, player.media, 'playing play pause ended emptied timeupdate', event => {
