@@ -6,6 +6,7 @@
 // ==========================================================================
 
 import captions from './captions';
+import descriptions from './descriptions';
 import defaults from './config/defaults';
 import { pip } from './config/states';
 import { getProviderByUrl, providers, types } from './config/types';
@@ -83,6 +84,7 @@ class Plyr {
       container: null,
       fullscreen: null,
       captions: null,
+      descriptions: null,
       buttons: {},
       display: {},
       progress: {},
@@ -99,6 +101,13 @@ class Plyr {
     this.captions = {
       active: null,
       currentTrack: -1,
+      meta: new WeakMap(),
+    };
+
+    // descriptions
+    this.descriptions = {
+      active: null,
+      currentDescTrack: -1,
       meta: new WeakMap(),
     };
 
@@ -267,7 +276,9 @@ class Plyr {
 
     // Wrap media
     if (!is.element(this.elements.container)) {
-      this.elements.container = createElement('div', { tabindex: 0 });
+      this.elements.container = createElement('div', {
+        'data-debug': this.config.debug,
+      });
       wrap(this.media, this.elements.container);
     }
 
@@ -949,6 +960,13 @@ class Plyr {
   toggleCaptions(input) {
     captions.toggle.call(this, input, false);
   }
+  /**
+   * Toggle descriptions
+   * @param {Boolean} input - Whether to enable descriptions
+   */
+  toggleDescriptions(input) {
+    descriptions.toggle.call(this, input, false);
+  }
 
   /**
    * Set the caption track by index
@@ -957,6 +975,13 @@ class Plyr {
   set currentTrack(input) {
     captions.set.call(this, input, false);
   }
+  /**
+   * Set the description track by index
+   * @param {Number} - Description index
+   */
+  set currentDescTrack(input) {
+    descriptions.set.call(this, input, false);
+  }
 
   /**
    * Get the current caption track index (-1 if disabled)
@@ -964,6 +989,13 @@ class Plyr {
   get currentTrack() {
     const { toggled, currentTrack } = this.captions;
     return toggled ? currentTrack : -1;
+  }
+  /**
+   * Get the current description track index (-1 if disabled)
+   */
+  get currentDescTrack() {
+    const { toggled, currentDescTrack } = this.descriptions;
+    return toggled ? currentDescTrack : -1;
   }
 
   /**
@@ -1128,12 +1160,14 @@ class Plyr {
           // Remove elements
           removeElement(this.elements.buttons.play);
           removeElement(this.elements.captions);
+          removeElement(this.elements.descriptions);
           removeElement(this.elements.controls);
           removeElement(this.elements.wrapper);
 
           // Clear for GC
           this.elements.buttons.play = null;
           this.elements.captions = null;
+          this.elements.descriptions = null;
           this.elements.controls = null;
           this.elements.wrapper = null;
         }
