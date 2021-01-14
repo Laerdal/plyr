@@ -91,6 +91,7 @@
     "through2": "^4.0.2"
   },
   "dependencies": {
+    "basic-tts": "^1.0.7",
     "core-js": "^3.7.0",
     "custom-event-polyfill": "^1.0.7",
     "loadjs": "^4.2.0",

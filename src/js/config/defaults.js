@@ -109,6 +109,14 @@ const defaults = {
     // This is needed for streaming captions, but may result in unselectable options
     update: false,
   },
+  // Descriptions settings
+  descriptions: {
+    active: false,
+    language: 'auto',
+    // Listen to new tracks added after Plyr is initialized.
+    // This is needed for streaming captions, but may result in unselectable options
+    update: false,
+  },
 
   // Fullscreen settings
   fullscreen: {
@@ -139,11 +147,13 @@ const defaults = {
     'mute',
     'volume',
     'captions',
+    // 'descriptions',
     'settings',
     'pip',
     'airplay',
     // 'download',
     'fullscreen',
+    // 'transcript',
   ],
   settings: ['captions', 'quality', 'speed'],
 
@@ -165,11 +175,15 @@ const defaults = {
     unmute: 'Unmute',
     enableCaptions: 'Enable captions',
     disableCaptions: 'Disable captions',
+    enableDescriptions: 'Enable descriptions',
+    disableDescriptions: 'Disable descriptions',
     download: 'Download',
     enterFullscreen: 'Enter fullscreen',
     exitFullscreen: 'Exit fullscreen',
+    transcript: 'Transcript',
     frameTitle: 'Player for {title}',
     captions: 'Captions',
+    descriptions: 'Descriptions',
     settings: 'Settings',
     pip: 'PIP',
     menuBack: 'Go back to previous menu',
@@ -230,6 +244,7 @@ const defaults = {
     quality: null,
     loop: null,
     language: null,
+    transcript: null,
   },
 
   // Events to watch and bubble
@@ -304,12 +319,14 @@ const defaults = {
       fastForward: '[data-plyr="fast-forward"]',
       mute: '[data-plyr="mute"]',
       captions: '[data-plyr="captions"]',
+      descriptions: '[data-plyr="descriptions"]',
       download: '[data-plyr="download"]',
       fullscreen: '[data-plyr="fullscreen"]',
       pip: '[data-plyr="pip"]',
       airplay: '[data-plyr="airplay"]',
       settings: '[data-plyr="settings"]',
       loop: '[data-plyr="loop"]',
+      transcript: '[data-plyr="transcript"]',
     },
     inputs: {
       seek: '[data-plyr="seek"]',
@@ -328,6 +345,8 @@ const defaults = {
     progress: '.plyr__progress',
     captions: '.plyr__captions',
     caption: '.plyr__caption',
+    descriptions: '.plyr__descriptions',
+    description: '.plyr__description',
   },
 
   // Class hooks added to the player in different states
@@ -367,6 +386,10 @@ const defaults = {
     captions: {
       enabled: 'plyr--captions-enabled',
       active: 'plyr--captions-active',
+    },
+    descriptions: {
+      enabled: 'plyr--descriptions-enabled',
+      active: 'plyr--descriptions-active',
     },
     fullscreen: {
       enabled: 'plyr--fullscreen-enabled',
