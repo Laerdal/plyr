@@ -5,6 +5,15 @@
 // Container
 .plyr--audio {
   display: block;
+
+  &.plyr--chapters-active {
+    display: flex;
+    flex-direction: row;
+
+    .plyr__chapters {
+      display: block;
+    }
+  }
 }
 
 // Controls container

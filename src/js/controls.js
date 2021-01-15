@@ -7,10 +7,12 @@ import RangeTouch from 'rangetouch';
 
 import captions from './captions';
 import descriptions from './descriptions';
+import chapters from './chapters';
 import html5 from './html5';
 import support from './support';
 import { repaint, transitionEndEvent } from './utils/animation';
 import { dedupe } from './utils/arrays';
+import { getHTML } from './utils/strings';
 import browser from './utils/browser';
 import {
   createElement,
@@ -65,6 +67,7 @@ const controls = {
         settings: getElement.call(this, this.config.selectors.buttons.settings),
         captions: getElement.call(this, this.config.selectors.buttons.captions),
         descriptions: getElement.call(this, this.config.selectors.buttons.descriptions),
+        chapters: getElement.call(this, this.config.selectors.buttons.chapters),
         fullscreen: getElement.call(this, this.config.selectors.buttons.fullscreen),
         transcript: getElements.call(this, this.config.selectors.buttons.transcript),
       };
@@ -236,6 +239,14 @@ const controls = {
         props.labelPressed = 'disableDescriptions';
         props.icon = 'descriptions-off';
         props.iconPressed = 'descriptions-on';
+        break;
+
+      case 'chapters':
+        props.toggle = true;
+        props.label = 'enableChapters';
+        props.labelPressed = 'disableChapters';
+        props.icon = 'chapters-off';
+        props.iconPressed = 'chapters-on';
         break;
 
       case 'fullscreen':
@@ -528,6 +539,7 @@ const controls = {
           case 'language':
             this.currentTrack = Number(value);
             this.currentDescTrack = Number(value);
+            this.currentChapTrack = Number(value);
             break;
 
           case 'quality':
@@ -551,6 +563,57 @@ const controls = {
     controls.bindMenuItemShortcuts.call(this, menuItem, type);
 
     list.appendChild(menuItem);
+  },
+
+  createChapterItem({ text, time, list, type, cue, child }) {
+    const player = this;
+    const attributes = getAttributesFromSelector(this.config.selectors.inputs[type]);
+
+    const chapterItem = createElement(
+      'button',
+      extend(attributes, {
+        class: 'plyr__chapters__control',
+        'aria-checked': false,
+        text,
+      }),
+    );
+
+    const index = createElement('span', { class: 'plyr__chapters__control__index' });
+    const flex = createElement('span', { class: 'plyr__chapters__control__text' });
+    index.innerHTML = `${child + 1}.`;
+    // We have to set as HTML incase of special characters
+    flex.innerHTML = text;
+
+    chapterItem.appendChild(index);
+    chapterItem.appendChild(flex);
+    on.call(this, chapterItem, 'click', () => {
+      player.currentTime = time;
+    });
+    list.appendChild(chapterItem);
+  },
+
+  createChapterLabel({ time, child }) {
+    const player = this;
+    const chapterLabel = createElement(
+      'span',
+      {
+        class: 'plyr__chapter-label',
+      },
+      `${child + 1}.`,
+    );
+
+    // Determine percentage, if already visible
+    let percent = 0;
+    percent = (time / player.duration) * 100;
+
+    // Set bounds
+    if (percent < 0) {
+      percent = 0;
+    } else if (percent > 100) {
+      percent = 100;
+    }
+    chapterLabel.style.left = `${percent}%`;
+    this.elements.chapterMarkers.appendChild(chapterLabel);
   },
 
   // Format a time for display
@@ -825,6 +888,9 @@ const controls = {
       value = this.currentTrack;
     } else if (setting === 'descriptions') {
       value = this.currentDescTrack;
+    } else if (setting === 'chapters') {
+      value = this.currentChapTrack;
+      controls.updateChaptersList.call(this);
     } else {
       value = !is.empty(input) ? input : this[setting];
 
@@ -892,6 +958,9 @@ const controls = {
 
       case 'descriptions':
         return descriptions.getLabel.call(this);
+
+      case 'chapters':
+        return chapters.getLabel.call(this);
 
       default:
         return null;
@@ -1106,6 +1175,51 @@ const controls = {
     options.forEach(controls.createMenuItem.bind(this));
 
     controls.updateSetting.call(this, type, list);
+  },
+
+  // Set a list of available chapters
+  setChaptersList() {
+    const type = 'chapters';
+    const list = this.elements.chapters;
+    const tracks = chapters.getTracks.call(this);
+    const toggle = Boolean(tracks.length);
+    // Toggle the pane and tab
+    controls.toggleMenuButton.call(this, type, toggle);
+
+    // Empty the menu
+    emptyElement(list);
+    emptyElement(this.elements.chapterMarkers);
+
+    // If there's no chapters, bail
+    if (!toggle) {
+      return;
+    }
+    // Generate options data
+    const track = tracks[0]; //TODO: use this.currentChapTrack
+
+    const cues = Array.from((track || {}).cues || []);
+    const cuesAsHtml = cues.map((cue) => cue.getCueAsHTML()).map(getHTML);
+    console.log(cues);
+    console.log(cuesAsHtml);
+    const options = cues.map((cue, index) => ({
+      cue,
+      time: cue.startTime,
+      text: cuesAsHtml[index],
+      checked: false,
+      list,
+      type: null,
+      child: index,
+    }));
+
+    chapters.setCues(cues);
+
+    // Generate options
+    options.forEach(controls.createChapterItem.bind(this));
+    options.forEach(controls.createChapterLabel.bind(this));
+  },
+
+  updateChaptersList() {
+    console.log('updating chapters list', arguments);
   },
 
   // Set a list of available captions languages
@@ -1331,7 +1445,7 @@ const controls = {
 
     // Larger overlaid play button
     if (is.array(this.config.controls) && this.config.controls.includes('play-large')) {
-      this.elements.container.appendChild(createButton.call(this, 'play-large'));
+      this.elements.inner.appendChild(createButton.call(this, 'play-large'));
     }
 
     // Create the container
@@ -1403,6 +1517,17 @@ const controls = {
 
         this.elements.progress = progress;
         progressContainer.appendChild(this.elements.progress);
+
+        // Chapter markers
+        const chapterMarkers = createElement(
+          'div',
+          {
+            class: 'plyr__chapter-markers',
+          },
+          '',
+        );
+        this.elements.chapterMarkers = chapterMarkers;
+        progressContainer.appendChild(this.elements.chapterMarkers);
         container.appendChild(progressContainer);
       }
 
@@ -1470,6 +1595,10 @@ const controls = {
       // Toggle descriptions button
       if (control === 'descriptions' && !browser.isIE && this.isVideo) {
         container.appendChild(createButton.call(this, 'descriptions', defaultAttributes));
+      }
+      // Toggle chapters button
+      if (control === 'chapters') {
+        container.appendChild(createButton.call(this, 'chapters', defaultAttributes));
       }
 
       // Settings button / menu
@@ -1763,12 +1892,12 @@ const controls = {
 
     // Inject into the container by default
     if (!is.element(target)) {
-      target = this.elements.container;
+      target = this.elements.inner;
     }
 
-    // Inject controls HTML (needs to be before captions, hence "afterbegin")
+    // Inject controls HTML
     const insertMethod = is.element(container) ? 'insertAdjacentElement' : 'insertAdjacentHTML';
-    target[insertMethod]('afterbegin', container);
+    target[insertMethod]('beforeend', container);
 
     // Find the elements if need be
     if (!is.element(this.elements.controls)) {

@@ -614,6 +614,9 @@ class Listeners {
     // Descriptions toggle
     this.bind(elements.buttons.descriptions, 'click', () => player.toggleDescriptions());
 
+    // Chapterss toggle
+    this.bind(elements.buttons.chapters, 'click', () => player.toggleChapters());
+
     // Download
     this.bind(
       elements.buttons.download,
@@ -956,6 +959,12 @@ class Listeners {
     });
     on.call(player, player.media, 'descriptionsdisabled', (event) => {
       updateLabel(elements.buttons.descriptions, 'enableDescriptions');
+    });
+    on.call(player, player.media, 'chaptersenabled', (event) => {
+      updateLabel(elements.buttons.chapters, 'disableChapters');
+    });
+    on.call(player, player.media, 'chaptersdisabled', (event) => {
+      updateLabel(elements.buttons.chapters, 'enableChapters');
     });
     on.call(player, player.media, 'volumechange', (event) => {
       updateLabel(elements.buttons.mute, player.muted ? 'unmute' : 'mute');

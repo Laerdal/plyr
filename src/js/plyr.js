@@ -7,6 +7,7 @@
 
 import captions from './captions';
 import descriptions from './descriptions';
+import chapters from './chapters';
 import defaults from './config/defaults';
 import { pip } from './config/states';
 import { getProviderByUrl, providers, types } from './config/types';
@@ -85,6 +86,7 @@ class Plyr {
       fullscreen: null,
       captions: null,
       descriptions: null,
+      chapters: null,
       buttons: {},
       display: {},
       progress: {},
@@ -108,6 +110,13 @@ class Plyr {
     this.descriptions = {
       active: null,
       currentDescTrack: -1,
+      meta: new WeakMap(),
+    };
+
+    // chapters
+    this.chapters = {
+      active: null,
+      currentChapTrack: -1,
       meta: new WeakMap(),
     };
 
@@ -279,7 +288,9 @@ class Plyr {
       this.elements.container = createElement('div', {
         'data-debug': this.config.debug,
       });
-      wrap(this.media, this.elements.container);
+      this.elements.inner = createElement('div', { class: this.config.selectors.inner.replace('.', '') });
+      wrap(this.media, this.elements.inner);
+      wrap(this.elements.inner, this.elements.container);
     }
 
     // Migrate custom properties from media to container (so they work 😉)
@@ -969,6 +980,14 @@ class Plyr {
   }
 
   /**
+   * Toggle Chapters
+   * @param {Boolean} input - Whether to enable chapters
+   */
+  toggleChapters(input) {
+    chapters.toggle.call(this, input, false);
+  }
+
+  /**
    * Set the caption track by index
    * @param {Number} - Caption index
    */
@@ -981,6 +1000,13 @@ class Plyr {
    */
   set currentDescTrack(input) {
     descriptions.set.call(this, input, false);
+  }
+  /**
+   * Set the chapter track by index
+   * @param {Number} - Description index
+   */
+  set currentChapTrack(input) {
+    chapaters.set.call(this, input, false);
   }
 
   /**
@@ -996,6 +1022,13 @@ class Plyr {
   get currentDescTrack() {
     const { toggled, currentDescTrack } = this.descriptions;
     return toggled ? currentDescTrack : -1;
+  }
+  /**
+   * Get the current caption track index (-1 if disabled)
+   */
+  get currentChapTrack() {
+    const { toggled, currentChapTrack } = this.chapters;
+    return toggled ? currentChapTrack : -1;
   }
 
   /**

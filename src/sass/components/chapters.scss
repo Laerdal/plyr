@@ -1,0 +1,57 @@
+// --------------------------------------------------------------
+// Chapters
+// --------------------------------------------------------------
+
+.plyr__chapters {
+  align-self: start;
+  animation: plyr-fade-in 0.3s ease;
+  display: none;
+  font-size: $plyr-font-size-chapters-small;
+  min-width: 176px;
+  text-align: left;
+  transition: transform 0.4s ease-in-out;
+
+  span:empty {
+    display: none;
+  }
+  button.plyr__chapters__control {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    border-left: 8px solid transparent;
+    border-right: 1px solid transparent;
+    border-top: 1px solid transparent;
+    color: #666;
+    cursor: pointer;
+    display: flex;
+    font-weight: normal;
+    padding: 0.5rem 1rem;
+    text-align: left;
+    width: 100%;
+    &:hover {
+      background: #f1fbfe;
+      color: #215369;
+    }
+    &.active {
+      background: #fafafa;
+      border-left-color: #2e7fa1;
+      color: #333;
+    }
+  }
+
+  .plyr__chapters__control__index {
+    margin-right: 5px;
+  }
+}
+.plyr__chapter-markers {
+  position: relative;
+}
+.plyr__chapter-label {
+  color: #767676;
+  font-size: 12px;
+  font-weight: normal;
+  pointer-events: none;
+  position: absolute;
+  top: 100%;
+  transform: translate(0, -5px);
+  z-index: 2;
+}

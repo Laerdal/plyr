@@ -69,7 +69,7 @@ const source = {
         });
 
         // Inject the new element
-        this.elements.container.appendChild(this.media);
+        this.elements.inner.appendChild(this.media);
 
         // Autoplay the new source?
         if (is.boolean(input.autoplay)) {
