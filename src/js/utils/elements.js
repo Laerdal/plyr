@@ -246,7 +246,8 @@ export function closest(element, selector) {
     let el = this;
 
     do {
-      if (matches.matches(el, selector)) return el;
+      // matches.matches fails in IE11, including check for temporary fix (will fallback to default fullscreen container)
+      if (matches.matches && matches.matches(el, selector)) return el;
       el = el.parentElement || el.parentNode;
     } while (el !== null && el.nodeType === 1);
     return null;
