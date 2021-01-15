@@ -18,7 +18,7 @@ $plyr-range-thumb-active-shadow-width: var(--plyr-range-thumb-active-shadow-widt
 $plyr-range-track-height: var(--plyr-range-track-height, 5px) !default;
 
 // Fill
-$plyr-range-fill-background: var(--plyr-range-fill-background, var(--plyr-color-main, $plyr-color-main)) !default;
+$plyr-range-fill-background: var(--plyr-range-fill-background, #777) !default;
 
 // Type specific
 $plyr-video-range-track-background: var(

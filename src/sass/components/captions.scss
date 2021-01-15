@@ -9,7 +9,7 @@
 
 .plyr__captions {
   animation: plyr-fade-in 0.3s ease;
-  bottom: 0;
+  bottom: calc(#{$plyr-control-icon-size} + (#{$plyr-control-spacing} * 2));
   display: none;
   font-size: $plyr-font-size-captions-small;
   left: 0;
@@ -47,6 +47,7 @@
   border-radius: 2px;
   box-decoration-break: clone;
   color: $plyr-captions-text-color;
+  font-family: monospace;
   line-height: 185%;
   padding: 0.2em 0.5em;
   white-space: pre-wrap;
