@@ -5,10 +5,7 @@
 // Nicer focus styles
 // ---------------------------------------
 @mixin plyr-tab-focus($color: $plyr-tab-focus-color) {
-  outline-color: $color;
-  outline-offset: 2px;
-  outline-style: dotted;
-  outline-width: 3px;
+  box-shadow: 0 4px 12px rgba(46, 127, 161, 0.25), 0 0 8px $color;
 }
 
 // Font smoothing
@@ -24,7 +21,7 @@
 // ---------------------------------------
 @mixin plyr-range-track() {
   background: transparent;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: calc(#{$plyr-range-track-height} / 2);
   height: $plyr-range-track-height;
   transition: box-shadow 0.3s ease;
@@ -33,7 +30,7 @@
 
 @mixin plyr-range-thumb() {
   background: $plyr-range-thumb-background;
-  border: 0;
+  border: 1px solid transparent;
   border-radius: 100%;
   box-shadow: $plyr-range-thumb-shadow;
   height: $plyr-range-thumb-height;

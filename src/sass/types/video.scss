@@ -104,10 +104,10 @@ $embed-padding: ((100 / 16) * 9);
 
 // Large play button (video only)
 .plyr__control--overlaid {
-  background: $plyr-video-control-background-hover;
-  border: 0;
+  background: $plyr-video-control-large-background;
+  border: 1px solid transparent;
   border-radius: 100%;
-  color: $plyr-video-control-color;
+  color: $plyr-video-control-large-color;
   display: none;
   left: 50%;
   opacity: 0.9;
@@ -118,10 +118,10 @@ $embed-padding: ((100 / 16) * 9);
   transition: 0.3s;
   z-index: 2;
 
-  // Offset icon to make the play button look right
   svg {
-    left: 2px;
+    height: 25px;
     position: relative;
+    width: 25px;
   }
 
   &:hover,
@@ -137,6 +137,11 @@ $embed-padding: ((100 / 16) * 9);
 
 .plyr--full-ui.plyr--video .plyr__control--overlaid {
   display: block;
+  &:hover,
+  &:focus {
+    background: $plyr-video-control-large-background;
+    color: $plyr-video-control-large-color;
+  }
 }
 
 // Video range inputs
