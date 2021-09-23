@@ -52,8 +52,9 @@ class Fullscreen {
       this.player.listeners.proxy(event, this.toggle, 'fullscreen');
     });
 
-    // Tap focus when in fullscreen
-    on.call(this, this.player.elements.container, 'keydown', (event) => this.trapFocus(event));
+    // Trap focus when in fullscreen
+    const fullscreenContainer = this.player.fullscreen.container || this.player.elements.container;
+    on.call(this, fullscreenContainer, 'keydown', (event) => this.trapFocus(event, fullscreenContainer));
 
     // Update the UI
     this.update();
@@ -147,6 +148,11 @@ class Fullscreen {
       button.pressed = this.active;
     }
 
+    // Update container fullscreen class
+    if (this.player.config.fullscreen.container) {
+      toggleClass(this.player.elements.fullscreen, 'plyr--container-fullscreen-entered', this.active);
+    }
+
     // Always trigger events on the plyr / media element (not a fullscreen container) and let them bubble up
     const target = this.target === this.player.media ? this.target : this.player.elements.container;
     // Trigger an event
@@ -203,7 +209,7 @@ class Fullscreen {
   };
 
   // Trap focus inside container
-  trapFocus = (event) => {
+  trapFocus = (event, fullscreenContainer) => {
     // Bail if iOS, not active, not the tab key
     if (browser.isIos || !this.active || event.key !== 'Tab' || event.keyCode !== 9) {
       return;
@@ -211,7 +217,10 @@ class Fullscreen {
 
     // Get the current focused element
     const focused = document.activeElement;
-    const focusable = getElements.call(this.player, 'a[href], button:not(:disabled), input:not(:disabled), [tabindex]');
+    const focusable = getElements.call(
+      fullscreenContainer,
+      'a[href], button:not(:disabled), input:not(:disabled), [tabindex]',
+    );
     const [first] = focusable;
     const last = focusable[focusable.length - 1];
 

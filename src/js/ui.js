@@ -3,7 +3,9 @@
 // ==========================================================================
 
 import captions from './captions';
+import chapters from './chapters';
 import controls from './controls';
+import descriptions from './descriptions';
 import support from './support';
 import browser from './utils/browser';
 import { getElement, toggleClass } from './utils/elements';
@@ -51,6 +53,7 @@ const ui = {
 
       // Re-attach control listeners
       this.listeners.controls();
+      this.listeners.ariaLabels();
     }
 
     // Remove native controls
@@ -59,6 +62,16 @@ const ui = {
     // Setup captions for HTML5
     if (this.isHTML5) {
       captions.setup.call(this);
+    }
+
+    // Setup descriptions for HTML5
+    if (this.isHTML5) {
+      descriptions.setup.call(this);
+    }
+
+    // Setup chapters for HTML5
+    if (this.isHTML5) {
+      chapters.setup.call(this);
     }
 
     // Reset volume
@@ -219,7 +232,6 @@ const ui = {
     // Set state
     Array.from(this.elements.buttons.play || []).forEach((target) => {
       Object.assign(target, { pressed: this.playing });
-      target.setAttribute('aria-label', i18n.get(this.playing ? 'pause' : 'play', this.config));
     });
 
     // Only update controls on non timeupdate events

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Plyr Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Docs styles -->
+    <link rel="stylesheet" href="dist/demo.css" />
+  </head>
+  <body>
+    <div class="grid">
+      <header><h1>Laerdal Plyr Demo</h1></header>
+      <main>
+        <div id="container">
+          <!-- Video -->
+          <h2>1. Video</h2>
+          <video id="video-player" controls crossorigin playsinline></video>
+
+          <h2>2. Video with Descriptions</h2>
+          <video id="video-player-with-descriptions" controls crossorigin playsinline></video>
+
+          <h2>3. Video with Chapters</h2>
+          <video id="video-player-with-chapters" controls crossorigin playsinline></video>
+
+          <h2>4. Video with Fullscreen Container</h2>
+          <div class="fullscreen-container">
+            <div class="col-1">
+              <video id="video-player-with-fullscreen-container" controls crossorigin playsinline></video>
+            </div>
+            <div class="col-2">
+              <p>Something in the container</p>
+              <button>Button to tab</button>
+              <a href="#">Link to tab</a>
+            </div>
+          </div>
+
+          <!-- Audio -->
+          <h2>5. Audio</h2>
+          <audio id="audio-player" controls crossorigin></audio>
+
+          <!-- Youtube -->
+          <h2>6. Youtube</h2>
+          <div class="plyr__video-embed" id="youtube-player">
+            <iframe
+              src="https://www.youtube.com/embed/bTqVqk7FSmY?origin=https://plyr.io&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;showinfo=0&amp;rel=0&amp;enablejsapi=1"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+            ></iframe>
+          </div>
+
+          <!-- Vimeo -->
+          <h2>7. Vimeo</h2>
+          <div class="plyr__video-embed" id="vimeo-player">
+            <iframe
+              src="https://player.vimeo.com/video/76979871?loop=false&amp;byline=false&amp;portrait=false&amp;title=false&amp;speed=true&amp;transparent=0&amp;gesture=media"
+              allowfullscreen
+              allowtransparency
+              allow="autoplay"
+            ></iframe>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../dist/plyr.polyfilled.js" crossorigin="anonymous"></script>
+    <script src="./dist/demo.js" crossorigin="anonymous"></script>
+  </body>
+</html>

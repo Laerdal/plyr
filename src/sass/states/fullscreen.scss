@@ -32,3 +32,11 @@
   top: 0;
   z-index: 10000000;
 }
+
+// Container used as fullscreen
+.plyr--container-fullscreen-entered {
+  @include plyr-fullscreen-active();
+  .plyr__controls {
+    position: fixed;
+  }
+}

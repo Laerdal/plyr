@@ -15,6 +15,8 @@ $css-vars-use-native: true;
 
 @import 'settings/badges';
 @import 'settings/captions';
+@import 'settings/descriptions';
+@import 'settings/chapters';
 @import 'settings/controls';
 @import 'settings/helpers';
 @import 'settings/menus';
@@ -30,6 +32,8 @@ $css-vars-use-native: true;
 
 @import 'components/badges';
 @import 'components/captions';
+@import 'components/descriptions';
+@import 'components/chapters';
 @import 'components/control';
 @import 'components/controls';
 @import 'components/menus';
