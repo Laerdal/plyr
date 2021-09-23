@@ -3,7 +3,7 @@
 // TODO: Create as class
 // ==========================================================================
 
-import tts from 'basic-tts';
+import Speech from 'speak-tts';
 
 import controls from './controls';
 import support from './support';
@@ -37,10 +37,34 @@ const descriptions = {
       return;
     }
 
-    if (!tts.isSupported()) {
+    descriptions.speech = new Speech();
+    if (!descriptions.speech.hasBrowserSupport()) {
       this.debug.log('[descriptions] speech synthesis not supported');
       return;
     }
+
+    descriptions.speech
+      .init({
+        volume: 0.5,
+        lang: 'en-GB',
+        rate: 1,
+        pitch: 1,
+        splitSentences: false,
+        listeners: {
+          onvoiceschanged: (voices) => {
+            this.debug.log('[descriptions] Voices changed', voices);
+          },
+        },
+      })
+      .then((data) => {
+        this.debug.log('[descriptions] Speech is ready', data);
+        // Update preferred voice
+        descriptions.voices = data.voices;
+        descriptions.updateTextToSpeech.call(this);
+      })
+      .catch((e) => {
+        this.debug.warn('[descriptions] An error occured while initializing : ', e);
+      });
 
     // Inject the container
     if (!is.element(this.elements.descriptions)) {
@@ -82,30 +106,23 @@ const descriptions = {
       const trackEvents = this.config.descriptions.update ? 'addtrack removetrack' : 'removetrack';
       on.call(this, this.media.textTracks, trackEvents, descriptions.update.bind(this));
     }
-    descriptions.setupTextToSpeech(language);
 
     // Update available languages in list next tick (the event must not be triggered before the listeners)
     setTimeout(descriptions.update.bind(this), 0);
   },
 
-  setupTextToSpeech(language) {
-    // wait on voices to be loaded before fetching list
-    window.speechSynthesis.onvoiceschanged = () => {
-      const voices = window.speechSynthesis.getVoices();
-
-      const speakerVoice = voices.find((voice) => {
-        return voice.lang.includes(language);
-      });
-
-      // Setup Text to Speech
-      descriptions.speaker = tts.createSpeaker({
-        voice: speakerVoice.name,
-        lang: speakerVoice.lang,
-        volume: 1,
-        pitch: 1,
-        rate: 1,
-      });
-    };
+  updateTextToSpeech() {
+    if (!this.descriptions.language || !descriptions.voices) {
+      return;
+    }
+    descriptions.speech.setLanguage(this.descriptions.language);
+    const defaultVoice = descriptions.voices.find((voice) => voice.default);
+    const specificVoice = descriptions.voices.find((voice) => voice.lang === this.descriptions.language);
+    const looseMatchVoice = descriptions.voices.find((voice) => voice.lang.includes(this.descriptions.language));
+    const voice = specificVoice || looseMatchVoice || defaultVoice;
+    this.debug.log('[descriptions] Voice set to ', voice);
+    this.debug.log('[descriptions] Language set to ', this.descriptions.language);
+    descriptions.speech.setVoice(voice.name);
   },
 
   // Update available language options in settings based on tracks
@@ -159,6 +176,7 @@ const descriptions = {
     ) {
       controls.setDescriptionsMenu.call(this);
     }
+    descriptions.updateTextToSpeech.call(this);
   },
 
   // Toggle descriptions display
@@ -213,13 +231,13 @@ const descriptions = {
       // Update settings menu
       controls.updateSetting.call(this, 'descriptions');
 
+      // Trigger event (not used internally)
+      triggerEvent.call(this, this.media, active ? 'descriptionsenabled' : 'descriptionsdisabled');
+
       if (!this.descriptions.active) {
         window.speechSynthesis.cancel();
         return;
       }
-
-      // Trigger event (not used internally)
-      triggerEvent.call(this, this.media, active ? 'descriptionsenabled' : 'descriptionsdisabled');
     }
 
     // Wait for the call stack to clear before setting mode='hidden'
@@ -407,18 +425,34 @@ const descriptions = {
       description.innerHTML = content;
       this.elements.descriptions.appendChild(description);
 
-      this.pause();
-
       // Utterance
-      descriptions.speaker
-        .speak(content)
+      descriptions.speech
+        .speak({
+          text: content,
+          queue: true,
+          listeners: {
+            onstart: () => {
+              this.debug.log('[descriptions] Start utterance: ', content);
+              this.pause();
+            },
+            onend: () => {
+              this.debug.log('[descriptions] End utterance: ', content);
+            },
+            onresume: () => {
+              this.debug.log('[descriptions] Resume utterance: ');
+            },
+            onboundary: (event) => {
+              this.debug.log(`[descriptions] ${event.name} boundary reached after ${event.elapsedTime} milliseconds.`);
+            },
+          },
+        })
         .then(() => {
-          this.play();
           this.debug.log('[descriptions] Success !');
+          this.play();
         })
         .catch((e) => {
-          this.play();
           this.debug.error('[descriptions] An error occurred :', e);
+          this.play();
         });
 
       // Trigger event
