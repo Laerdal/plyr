@@ -148,6 +148,11 @@ class Fullscreen {
       button.pressed = this.active;
     }
 
+    // Update container fullscreen class
+    if (this.player.config.fullscreen.container) {
+      toggleClass(this.player.elements.fullscreen, 'plyr--container-fullscreen-entered', this.active);
+    }
+
     // Always trigger events on the plyr / media element (not a fullscreen container) and let them bubble up
     const target = this.target === this.player.media ? this.target : this.player.elements.container;
     // Trigger an event
