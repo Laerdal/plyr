@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const videoPlayerWithChapters = new Plyr('#video-player-with-chapters', playerOptions);
   // ---- 3. Player with fullscreen container -----------------
   const fullscreenContainerOptions = playerOptions;
-  fullscreenContainerOptions.fullscreen.container = '.container';
+  fullscreenContainerOptions.fullscreen.container = '.fullscreen-container';
   const videoPlayerWithFullscreenContainer = new Plyr(
     '#video-player-with-fullscreen-container',
     fullscreenContainerOptions,

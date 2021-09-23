@@ -6,3 +6,8 @@
 .plyr {
   margin-bottom: 5rem;
 }
+
+.fullscreen-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
