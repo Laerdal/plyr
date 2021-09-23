@@ -1,95 +1,8 @@
-const sources = {
-  video: {
-    type: 'video',
-    title: 'View From A Blue Moon',
-    sources: [
-      {
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4',
-        type: 'video/mp4',
-        size: 576,
-      },
-      {
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4',
-        type: 'video/mp4',
-        size: 720,
-      },
-      {
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1080p.mp4',
-        type: 'video/mp4',
-        size: 1080,
-      },
-      {
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-1440p.mp4',
-        type: 'video/mp4',
-        size: 1440,
-      },
-    ],
-    poster: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg',
-    tracks: [
-      {
-        kind: 'captions',
-        label: 'English',
-        srclang: 'en',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt',
-        default: true,
-      },
-      {
-        kind: 'captions',
-        label: 'French',
-        srclang: 'fr',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt',
-      },
-      {
-        kind: 'descriptions',
-        label: 'English',
-        srclang: 'en',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt',
-        default: true,
-      },
-      {
-        kind: 'descriptions',
-        label: 'French',
-        srclang: 'fr',
-        src: 'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt',
-      },
-    ],
-    previewThumbnails: {
-      src: ['https://cdn.plyr.io/static/demo/thumbs/100p.vtt', 'https://cdn.plyr.io/static/demo/thumbs/240p.vtt'],
-    },
-  },
-  audio: {
-    type: 'audio',
-    title: 'Kishi Bashi &ndash; &ldquo;It All Began With A Burst&rdquo;',
-    sources: [
-      {
-        src: 'https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.mp3',
-        type: 'audio/mp3',
-      },
-      {
-        src: 'https://cdn.plyr.io/static/demo/Kishi_Bashi_-_It_All_Began_With_a_Burst.ogg',
-        type: 'audio/ogg',
-      },
-    ],
-  },
-  youtube: {
-    type: 'video',
-    sources: [
-      {
-        src: 'https://youtube.com/watch?v=bTqVqk7FSmY',
-        provider: 'youtube',
-      },
-    ],
-  },
-  vimeo: {
-    type: 'video',
-    sources: [
-      {
-        src: 'https://vimeo.com/40648169',
-        provider: 'vimeo',
-      },
-    ],
-  },
-};
+import 'custom-event-polyfill';
+import 'url-polyfill';
+
+import sources from './sources';
+
 document.addEventListener('DOMContentLoaded', function () {
   const playerOptions = {
     debug: true,
@@ -116,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
       'volume',
       'captions',
       'descriptions',
+      'chapters',
       'settings',
       'pip',
       'airplay',
@@ -128,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
     descriptions: {
       active: true,
     },
+    chapters: {
+      active: true,
+    },
     previewThumbnails: {
       enabled: true,
       src: ['https://cdn.plyr.io/static/demo/thumbs/100p.vtt', 'https://cdn.plyr.io/static/demo/thumbs/240p.vtt'],
@@ -136,21 +53,43 @@ document.addEventListener('DOMContentLoaded', function () {
       // Prevent Vimeo blocking plyr.io demo site
       referrerPolicy: 'no-referrer',
     },
+    fullscreen: {
+      container: null,
+    },
   };
 
-  // Setup the player
+  // ---- Setup the players ----------------------------------
+  // ---- 1. Standard player -----------------
   const videoPlayer = new Plyr('#video-player', playerOptions);
+  // ---- 2. Player with descriptions -----------------
+  const videoPlayerWithDescriptions = new Plyr('#video-player-with-descriptions', playerOptions);
+  // ---- 2. Player with chapters -----------------
+  const videoPlayerWithChapters = new Plyr('#video-player-with-chapters', playerOptions);
+  // ---- 3. Player with fullscreen container -----------------
+  const fullscreenContainerOptions = playerOptions;
+  fullscreenContainerOptions.fullscreen.container = '.container';
+  const videoPlayerWithFullscreenContainer = new Plyr(
+    '#video-player-with-fullscreen-container',
+    fullscreenContainerOptions,
+  );
+
   const audioPlayer = new Plyr('#audio-player', playerOptions);
   const youtubePlayer = new Plyr('#youtube-player', playerOptions);
   const vimeoPlayer = new Plyr('#vimeo-player', playerOptions);
 
   // Expose for tinkering in the console
   window.videoPlayer = videoPlayer;
+  window.videoPlayerWithDescriptions = videoPlayerWithDescriptions;
+  window.videoPlayerWithChapters = videoPlayerWithChapters;
+  window.videoPlayerWithFullscreenContainer = videoPlayerWithFullscreenContainer;
   window.audioPlayer = audioPlayer;
   window.youtubePlayer = youtubePlayer;
   window.vimeoPlayer = vimeoPlayer;
 
   // Set the source
   videoPlayer.source = sources.video;
+  videoPlayerWithDescriptions.source = sources.videoWithDescriptions;
+  videoPlayerWithChapters.source = sources.videoWithChapters;
+  videoPlayerWithFullscreenContainer.source = sources.video;
   audioPlayer.source = sources.audio;
 });
