@@ -96,6 +96,7 @@
     "loadjs": "^4.2.0",
     "rangetouch": "^2.0.1",
     "speak-tts": "^2.0.8",
+    "srt-webvtt": "^2.0.0",
     "url-polyfill": "^1.1.12"
   }
 }

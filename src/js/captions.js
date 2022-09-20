@@ -3,18 +3,13 @@
 // TODO: Create as class
 // ==========================================================================
 
+import toWebVTT from 'srt-webvtt';
+
 import controls from './controls';
 import support from './support';
 import { dedupe } from './utils/arrays';
 import browser from './utils/browser';
-import {
-  createElement,
-  emptyElement,
-  getAttributesFromSelector,
-  insertAfter,
-  removeElement,
-  toggleClass,
-} from './utils/elements';
+import { createElement, emptyElement, getAttributesFromSelector, removeElement, toggleClass } from './utils/elements';
 import { on, triggerEvent } from './utils/events';
 import fetch from './utils/fetch';
 import i18n from './utils/i18n';
@@ -52,28 +47,38 @@ const captions = {
 
     // Fix IE captions if CORS is used
     // Fetch captions and inject as blobs instead (data URIs not supported!)
-    if (browser.isIE && window.URL) {
-      const elements = this.media.querySelectorAll('track');
+    // Convert SRT format text tracks to VTT
+    const elements = this.media.querySelectorAll('track');
 
-      Array.from(elements).forEach((track) => {
-        const src = track.getAttribute('src');
-        const url = parseUrl(src);
+    Array.from(elements).forEach((track) => {
+      const src = track.getAttribute('src');
+      const url = parseUrl(src);
 
-        if (
-          url !== null &&
-          url.hostname !== window.location.href.hostname &&
-          ['http:', 'https:'].includes(url.protocol)
-        ) {
+      if (
+        url !== null &&
+        url.hostname !== window.location.href.hostname &&
+        ['http:', 'https:'].includes(url.protocol)
+      ) {
+        // Does the track src end with '.srt'
+        const isSrtFormat = /(.)+(.srt)/gi.exec(src);
+
+        if ((browser.isIE && window.URL) || isSrtFormat) {
           fetch(src, 'blob')
             .then((blob) => {
-              track.setAttribute('src', window.URL.createObjectURL(blob));
+              if (isSrtFormat) {
+                toWebVTT(blob).then((textTrackUrl) => {
+                  track.setAttribute('src', textTrackUrl);
+                });
+              } else {
+                track.setAttribute('src', window.URL.createObjectURL(blob));
+              }
             })
             .catch(() => {
               removeElement(track);
             });
         }
-      });
-    }
+      }
+    });
 
     // Get and set initial data
     // The "preferred" options are not realized unless / until the wanted language has a match
