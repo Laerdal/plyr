@@ -2,6 +2,8 @@
 // Plyr source update
 // ==========================================================================
 
+import toWebVTT from 'srt-webvtt';
+
 import { providers } from './config/types';
 import html5 from './html5';
 import media from './media';
@@ -9,6 +11,7 @@ import PreviewThumbnails from './plugins/preview-thumbnails';
 import support from './support';
 import ui from './ui';
 import { createElement, insertElement, removeElement } from './utils/elements';
+import fetch from './utils/fetch';
 import is from './utils/is';
 import { getDeep } from './utils/objects';
 
@@ -40,7 +43,7 @@ const source = {
     // Destroy instance and re-setup
     this.destroy.call(
       this,
-      () => {
+      async () => {
         // Reset quality options
         this.options.quality = [];
 
@@ -114,9 +117,23 @@ const source = {
 
         // HTML5 stuff
         if (this.isHTML5) {
-          // Setup captions and descriptions
+          // Setup captions, chapters and descriptions
           if (Object.keys(input).includes('tracks')) {
-            source.insertElements.call(this, 'track', input.tracks);
+            await Promise.all(
+              input.tracks.map(async (config) => {
+                const track = config;
+                const trackSrc = track.src;
+
+                // Does the track src end with '.srt'
+                if (/(.)+(.srt)/gi.exec(trackSrc)) {
+                  const blob = await fetch(trackSrc, 'blob');
+                  const textTrackUrl = await toWebVTT(blob);
+                  track.src = textTrackUrl;
+                }
+
+                insertElement('track', this.media, track);
+              }),
+            );
           }
         }
 
