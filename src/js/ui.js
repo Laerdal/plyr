@@ -59,18 +59,10 @@ const ui = {
     // Remove native controls
     ui.toggleNativeControls.call(this);
 
-    // Setup captions for HTML5
+    // Setup captions/descriptions/chapters for HTML5
     if (this.isHTML5) {
       captions.setup.call(this);
-    }
-
-    // Setup descriptions for HTML5
-    if (this.isHTML5) {
       descriptions.setup.call(this);
-    }
-
-    // Setup chapters for HTML5
-    if (this.isHTML5) {
       chapters.setup.call(this);
     }
 

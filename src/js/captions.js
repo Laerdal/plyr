@@ -6,21 +6,11 @@
 import controls from './controls';
 import support from './support';
 import { dedupe } from './utils/arrays';
-import browser from './utils/browser';
-import {
-  createElement,
-  emptyElement,
-  getAttributesFromSelector,
-  insertAfter,
-  removeElement,
-  toggleClass,
-} from './utils/elements';
+import { createElement, emptyElement, getAttributesFromSelector, toggleClass } from './utils/elements';
 import { on, triggerEvent } from './utils/events';
-import fetch from './utils/fetch';
 import i18n from './utils/i18n';
 import is from './utils/is';
 import { getHTML } from './utils/strings';
-import { parseUrl } from './utils/urls';
 
 const captions = {
   // Setup captions
@@ -48,31 +38,6 @@ const captions = {
     if (!is.element(this.elements.captions)) {
       this.elements.captions = createElement('div', getAttributesFromSelector(this.config.selectors.captions));
       this.elements.wrapper.appendChild(this.elements.captions);
-    }
-
-    // Fix IE captions if CORS is used
-    // Fetch captions and inject as blobs instead (data URIs not supported!)
-    if (browser.isIE && window.URL) {
-      const elements = this.media.querySelectorAll('track');
-
-      Array.from(elements).forEach((track) => {
-        const src = track.getAttribute('src');
-        const url = parseUrl(src);
-
-        if (
-          url !== null &&
-          url.hostname !== window.location.href.hostname &&
-          ['http:', 'https:'].includes(url.protocol)
-        ) {
-          fetch(src, 'blob')
-            .then((blob) => {
-              track.setAttribute('src', window.URL.createObjectURL(blob));
-            })
-            .catch(() => {
-              removeElement(track);
-            });
-        }
-      });
     }
 
     // Get and set initial data
@@ -110,7 +75,7 @@ const captions = {
     }
 
     // Update available languages in list next tick (the event must not be triggered before the listeners)
-    setTimeout(captions.update.bind(this), 0);
+    setTimeout(captions.update.bind(this), 200);
   },
 
   // Update available language options in settings based on tracks
