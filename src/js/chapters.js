@@ -68,11 +68,8 @@ const chapters = {
       [language] = languages;
     }
 
-    let active = this.storage.get('chapters');
-    if (!is.boolean(active)) {
-      ({ active } = this.config.chapters);
-    }
-
+    let active = this.config.chapters.active
+    
     Object.assign(this.chapters, {
       toggled: false,
       active,
