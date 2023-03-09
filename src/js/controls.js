@@ -1201,7 +1201,7 @@ const controls = {
 
   setChaptersMenu() {
     // Menu required
-    if (!is.element(this.elements.chapters) || chapters.isMenuSetup) {
+    if (!is.element(this.elements.chapters)) {
       return;
     }
 
