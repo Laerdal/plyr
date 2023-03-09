@@ -52,35 +52,6 @@ const chapters = {
       this.elements.container.appendChild(this.elements.chapters);
     }
 
-    // Fix IE chapters if CORS is used
-    // Fetch chapters and inject as blobs instead (data URIs not supported!)
-    // if (browser.isIE && window.URL) {
-    //   const elements = this.media.querySelectorAll('track');
-
-    //   Array.from(elements).forEach((track) => {
-    //     const src = track.getAttribute('src');
-    //     const url = parseUrl(src);
-
-    //     if (
-    //       url !== null &&
-    //       url.hostname !== window.location.href.hostname &&
-    //       ['http:', 'https:'].includes(url.protocol)
-    //     ) {
-    //       fetch(src, 'blob')
-    //         .then((blob) => {
-    //           track.setAttribute('src', window.URL.createObjectURL(blob));
-    //           track.addEventListener('onload', function (event) {
-    //             console.log(event);
-    //             console.log('SOMETHING HAS LOADED');
-    //           });
-    //         })
-    //         .catch(() => {
-    //           removeElement(track);
-    //         });
-    //     }
-    //   });
-    // }
-
     // Get and set initial data
     // The "preferred" options are not realized unless / until the wanted language has a match
     // * languages: Array of user's browser languages.
