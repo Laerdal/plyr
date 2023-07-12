@@ -359,7 +359,7 @@ const captions = {
       // Empty the container and create a new child element
       emptyElement(this.elements.captions);
       const caption = createElement('span', getAttributesFromSelector(this.config.selectors.caption));
-      caption.innerHTML = content;
+      caption.innerHTML = content.replace(/↵/g, '\n');
       this.elements.captions.appendChild(caption);
 
       // Trigger event
