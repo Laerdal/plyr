@@ -475,6 +475,7 @@ const defaults = {
     title: false,
     speed: true,
     transparent: false,
+    background: true,
     // Custom settings from Plyr
     customControls: true,
     referrerPolicy: null, // https://developer.mozilla.org/en-US/docs/Web/API/HTMLIFrameElement/referrerPolicy
