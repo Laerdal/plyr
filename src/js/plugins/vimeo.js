@@ -327,10 +327,6 @@ const vimeo = {
       captions.setup.call(player);
     });
 
-    player.embed.on('cuechange', ({ cues = [] }) => {
-      const strippedCues = cues.map((cue) => stripHTML(cue.text));
-      captions.updateCues.call(player, strippedCues);
-    });
 
     player.embed.on('loaded', () => {
       // Assure state and events are updated on autoplay
