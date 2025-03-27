@@ -1,6 +1,6 @@
 // ==========================================================================
 // Plyr
-// plyr.js v3.6.8
+// plyr.js v3.7.8
 // https://github.com/sampotts/plyr
 // License: The MIT License (MIT)
 // ==========================================================================
@@ -74,7 +74,7 @@ class Plyr {
       (() => {
         try {
           return JSON.parse(this.media.getAttribute('data-plyr-config'));
-        } catch (e) {
+        } catch (_) {
           return {};
         }
       })(),
@@ -264,7 +264,7 @@ class Plyr {
     }
 
     // Check for support again but with type
-    this.supported = support.check(this.type, this.provider, this.config.playsinline);
+    this.supported = support.check(this.type, this.provider);
 
     // If no support for even API, bail
     if (!this.supported.api) {
@@ -667,7 +667,7 @@ class Plyr {
 
   /**
    * Set playback speed
-   * @param {Number} speed - the speed of playback (0.5-2.0)
+   * @param {Number} input - the speed of playback (0.5-2.0)
    */
   set speed(input) {
     let speed = null;
@@ -693,7 +693,9 @@ class Plyr {
 
     // Set media speed
     setTimeout(() => {
-      this.media.playbackRate = speed;
+      if (this.media) {
+        this.media.playbackRate = speed;
+      }
     }, 0);
   }
 
@@ -949,8 +951,7 @@ class Plyr {
    * @param {Boolean} input - Whether to autoplay or not
    */
   set autoplay(input) {
-    const toggle = is.boolean(input) ? input : this.config.autoplay;
-    this.config.autoplay = toggle;
+    this.config.autoplay = is.boolean(input) ? input : this.config.autoplay;
   }
 
   /**
@@ -986,10 +987,11 @@ class Plyr {
 
   /**
    * Set the caption track by index
-   * @param {Number} - Caption index
+   * @param {Number} input - Caption index
    */
   set currentTrack(input) {
     captions.set.call(this, input, false);
+    captions.setup.call(this);
   }
 
   /**
@@ -1035,7 +1037,7 @@ class Plyr {
   /**
    * Set the wanted language for captions
    * Since tracks can be added later it won't update the actual caption track until there is a matching track
-   * @param {String} - Two character ISO language code (e.g. EN, FR, PT, etc)
+   * @param {String} input - Two character ISO language code (e.g. EN, FR, PT, etc)
    */
   set language(input) {
     captions.setLanguage.call(this, input, false);
@@ -1093,6 +1095,23 @@ class Plyr {
 
     // Chrome
     return this.media === document.pictureInPictureElement;
+  }
+
+   /**
+   * Sets the preview thumbnails for the current source
+   */
+   setPreviewThumbnails(thumbnailSource) {
+    if (this.previewThumbnails && this.previewThumbnails.loaded) {
+      this.previewThumbnails.destroy();
+      this.previewThumbnails = null;
+    }
+
+    Object.assign(this.config.previewThumbnails, thumbnailSource);
+
+    // Create new instance if it is still enabled
+    if (this.config.previewThumbnails.enabled) {
+      this.previewThumbnails = new PreviewThumbnails(this);
+    }
   }
 
   /**
@@ -1290,10 +1309,9 @@ class Plyr {
    * Check for support
    * @param {String} type - Player type (audio/video)
    * @param {String} provider - Provider (html5/youtube/vimeo)
-   * @param {Boolean} inline - Where player has `playsinline` sttribute
    */
-  static supported(type, provider, inline) {
-    return support.check(type, provider, inline);
+  static supported(type, provider) {
+    return support.check(type, provider);
   }
 
   /**

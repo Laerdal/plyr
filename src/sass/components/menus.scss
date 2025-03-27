@@ -25,7 +25,7 @@
   &__container {
     animation: plyr-popup 0.2s ease;
     background: $plyr-menu-background;
-    border-radius: 4px;
+    border-radius: $plyr-menu-radius;
     bottom: 100%;
     box-shadow: $plyr-menu-shadow;
     color: $plyr-menu-color;
@@ -73,10 +73,7 @@
       color: $plyr-menu-color;
       display: flex;
       font-size: $plyr-font-size-menu;
-      padding-bottom: calc(#{$plyr-control-padding} / 1.5);
-      padding-left: calc(#{$plyr-control-padding} * 1.5);
-      padding-right: calc(#{$plyr-control-padding} * 1.5);
-      padding-top: calc(#{$plyr-control-padding} / 1.5);
+      padding: calc(#{$plyr-control-padding} / 1.5) calc(#{$plyr-control-padding} * 1.5);
       user-select: none;
       width: 100%;
 
@@ -102,7 +99,7 @@
           right: calc((#{$plyr-control-padding} * 1.5) - #{$plyr-menu-item-arrow-size});
         }
 
-        &.plyr__tab-focus::after,
+        &:focus-visible::after,
         &:hover::after {
           border-left-color: currentColor;
         }
@@ -134,7 +131,7 @@
           top: 100%;
         }
 
-        &.plyr__tab-focus::after,
+        &:focus-visible::after,
         &:hover::after {
           border-right-color: currentColor;
         }
@@ -182,7 +179,7 @@
         }
       }
 
-      &.plyr__tab-focus::before,
+      &:focus-visible::before,
       &:hover::before {
         background: rgba($plyr-color-gray-900, 0.1);
       }
@@ -193,7 +190,7 @@
       align-items: center;
       display: flex;
       margin-left: auto;
-      margin-right: calc((#{$plyr-control-padding} - 2) * -1);
+      margin-right: calc((#{$plyr-control-padding} - 2px) * -1);
       overflow: hidden;
       padding-left: calc(#{$plyr-control-padding} * 3.5);
       pointer-events: none;
