@@ -37,6 +37,7 @@ const captions = {
     // Inject the container
     if (!is.element(this.elements.captions)) {
       this.elements.captions = createElement('div', getAttributesFromSelector(this.config.selectors.captions));
+      this.elements.captions.setAttribute('dir', 'auto');
       this.elements.wrapper.appendChild(this.elements.captions);
     }
 
@@ -118,7 +119,9 @@ const captions = {
     }
 
     // Enable or disable captions based on track length
-    toggleClass(this.elements.container, this.config.classNames.captions.enabled, !is.empty(tracks));
+    if (this.elements) {
+      toggleClass(this.elements.container, this.config.classNames.captions.enabled, !is.empty(tracks));
+    }
 
     // Update available languages in list
     if (

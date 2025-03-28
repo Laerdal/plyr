@@ -221,6 +221,12 @@ declare class Plyr {
    */
   airplay(): void;
 
+
+  /**
+   * Sets the preview thumbnails for the current source.
+   */
+  setPreviewThumbnails(source: Plyr.PreviewThumbnailsOptions): void;
+
   /**
    * Toggle the controls (video only). Takes optional truthy value to force it on/off.
    */
@@ -246,10 +252,12 @@ declare class Plyr {
    */
   supports(type: string): boolean;
 
-  /**
+   /**
    * Destroy lib instance
+   * @param {Function} callback - Callback for when destroy is complete
+   * @param {Boolean} soft - Whether it's a soft destroy (for source changes etc)
    */
-  destroy(): void;
+   destroy(callback?: (...args: any[]) => void, soft?: boolean): void;
 }
 
 declare namespace Plyr {
@@ -275,8 +283,8 @@ declare namespace Plyr {
     controlsshown: PlyrEvent;
     ready: PlyrEvent;
   };
-  // For retrocompatibility, we keep StandadEvent
-  type StandadEvent = keyof Plyr.StandardEventMap;
+  // For retrocompatibility, we keep StandardEvent
+  type StandardEvent = keyof Plyr.StandardEventMap;
   type Html5EventMap = {
     loadstart: PlyrEvent;
     loadeddata: PlyrEvent;
@@ -344,7 +352,7 @@ declare namespace Plyr {
      * id (the unique id for the player), seektime (the seektime step in seconds), and title (the media title). See CONTROLS.md for more info on how the html needs to be structured.
      * Defaults to ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
      */
-    controls?: string[] | ((id: string, seektime: number, title: string) => unknown) | Element;
+    controls?: string | string[] | ((id: string, seektime: number, title: string) => unknown) | Element;
 
     /**
      * If you're using the default controls are used then you can specify which settings to show in the menu
@@ -533,6 +541,16 @@ declare namespace Plyr {
      * Preview Thumbnails Options.
      */
     previewThumbnails?: PreviewThumbnailsOptions;
+
+    /**
+     * Media Metadata Options.
+     */
+    mediaMetadata?: MediaMetadataOptions;
+
+    /**
+     * Markers Options
+     */
+    markers?: MarkersOptions;
   }
 
   interface QualityOptions {
@@ -548,12 +566,35 @@ declare namespace Plyr {
 
   interface AdOptions {
     enabled: boolean;
-    publisherId: string;
+    publisherId?: string;
+    tagUrl?: string;
   }
 
   interface SpeedOptions {
     selected: number;
     options: number[];
+  }
+
+  interface MediaMetadataArtwork {
+    src: string;
+    sizes?: string;
+    type: string;
+  }
+
+  interface MediaMetadataOptions {
+    title?: string;
+    artist?: string;
+    album?: string;
+    artwork?: MediaMetadataArtwork[];
+  }
+
+  interface MarkersPoints {
+    time: number;
+    label: string;
+  }
+  interface MarkersOptions {
+    enabled: boolean;
+    points: MarkersPoints[];
   }
 
   interface KeyboardOptions {
@@ -642,6 +683,11 @@ declare namespace Plyr {
      * Booleans are converted to HTML5 value-less attributes.
      */
     tracks?: Track[];
+
+    /**
+     * Enable or disable preview thumbnails for current source
+     */
+    previewThumbnails?: Plyr.PreviewThumbnailsOptions;
   }
 
   interface Source {

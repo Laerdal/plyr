@@ -7,7 +7,6 @@ import chapters from './chapters';
 import controls from './controls';
 import descriptions from './descriptions';
 import support from './support';
-import browser from './utils/browser';
 import { getElement, toggleClass } from './utils/elements';
 import { ready, triggerEvent } from './utils/events';
 import i18n from './utils/i18n';
@@ -87,6 +86,9 @@ const ui = {
     // Reset time display
     controls.timeUpdate.call(this);
 
+    // Reset duration display
+    controls.durationUpdate.call(this);
+
     // Update the UI
     ui.checkPlaying.call(this);
 
@@ -99,9 +101,6 @@ const ui = {
 
     // Check for airplay support
     toggleClass(this.elements.container, this.config.classNames.airplay.supported, support.airplay && this.isHTML5);
-
-    // Add iOS class
-    toggleClass(this.elements.container, this.config.classNames.isIos, browser.isIos);
 
     // Add touch class
     toggleClass(this.elements.container, this.config.classNames.isTouch, this.touch);
@@ -126,6 +125,11 @@ const ui = {
     // The event listeners for it doesn't get called if preload is disabled (#701)
     if (this.config.duration) {
       controls.durationUpdate.call(this);
+    }
+
+     // Media metadata
+     if (this.config.mediaMetadata) {
+      controls.setMediaMetadata.call(this);
     }
   },
 
@@ -186,13 +190,13 @@ const ui = {
         .call(this)
         // Load image
         .then(() => loadImage(poster))
-        .catch((err) => {
+        .catch((error) => {
           // Hide poster on error unless it's been set by another call
           if (poster === this.poster) {
             ui.togglePoster.call(this, false);
           }
           // Rethrow
-          throw err;
+          throw error;
         })
         .then(() => {
           // Prevent race conditions
