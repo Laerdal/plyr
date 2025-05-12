@@ -173,6 +173,9 @@ If you don't want to create a build system to include Plyr as an npm module, you
 - Download the files from [unpkg](https://unpkg.com/browse/plyr/dist/) or similar services.
 - Build the project yourself using `npm i && npm run build`, which installs the dependencies and spits out a build to `dist`.
 
+### Self hosting in Laerdal-Adapt-Media-Player - Updated for Laerdal Adapt ELTT team
+- Refer the Adapt link for detail to be integrating the plyr into [adapt-laerdal-media-library](https://laerdal.atlassian.net/wiki/spaces/INFE/pages/27855116/ADAPT+Media+Player+using+Plyr)
+
 # Ads
 
 Plyr has partnered up with [vi.ai](https://vi.ai/publisher-video-monetization/?aid=plyrio) to offer monetization options for your videos. Getting setup is easy:
