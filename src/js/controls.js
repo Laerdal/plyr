@@ -567,9 +567,9 @@ const controls = {
   createChapterItem({ index, chaptersList, text, time, checked = false }) {
     const chapterButton = createElement('button', {
       type: 'button',
-      role: 'menuitemradio',
+      role: 'listitem',
       class: `${this.config.classNames.control} plyr__chapter`.trim(),
-      'aria-checked': checked,
+      'aria-selected': checked,
       'data-index': index + 1,
       'data-starttime': time,
     });

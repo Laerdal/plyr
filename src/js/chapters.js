@@ -373,8 +373,8 @@ const chapters = {
   updateChapterButton(chapterButton, force) {
     // Replicate radio button behaviour
     Array.from(this.elements.chapters.children)
-      .filter((node) => matches(node, '[role="menuitemradio"]'))
-      .forEach((node) => node.setAttribute('aria-checked', 'false'));
+      .filter((node) => matches(node, '[role="listitem"]'))
+      .forEach((node) => node.setAttribute('aria-selected', 'false'));
 
     if (chapterButton) {
       const timeToSet = chapterButton.getAttribute('data-starttime');
@@ -382,7 +382,7 @@ const chapters = {
       if (force) {
         this.media.currentTime = timeToSet;
       }
-      chapterButton.setAttribute('aria-checked', 'true');
+      chapterButton.setAttribute('aria-selected', 'true');
     }
   },
 };
